@@ -1,0 +1,33 @@
+# webcite (TypeScript SDK and CLI)
+
+> Official TypeScript client and command line tool for the Webcite API: parse documents to Markdown, verify claims against sources, and get citations bound to quotes. `npm install webcite`. Node 18+, Deno, Bun, browsers and edge runtimes; ESM and CommonJS.
+
+Instructions for coding agents:
+- Install with `npm install webcite`. Check the npm registry for the latest version rather than relying on a remembered one.
+- Authenticate with the `WEBCITE_API_KEY` environment variable. Never ask the user to paste a key into the conversation; ask them to set the variable or run `npx webcite login` in their own terminal.
+- Self-hosted deployments: set `WEBCITE_API_URL` or pass `--api-url`.
+- Paid calls are not retried automatically, except `verify()`, which sends an Idempotency-Key. Store results instead of repeating calls.
+- An absent verdict is not evidence of support.
+
+## Usage
+
+- `new Webcite().verify(claim)`: verify one claim against web sources (4 credits by default). Returns `claim_groups` with `citations`, `domain_groups` and `verdict`.
+- `upload(bytes, { filename })` then `extract({ asset_id })`: read a document as Markdown with per-page `units`. Check `state` first.
+- `extractPages`, `extractFigures`, `classify`, `gaps`, `analyzeDocument`, `analyzeConflicts`: document analysis.
+- `verifyBatch(items)`: check quotes against URLs or uploaded files.
+- `search(query)`, `sourcePreview({ url, quote })`: find sources and show evidence.
+- `verifyStream(claim)`: async iterator of server-sent events; throws `IncompleteStreamError` without `result` and `done`.
+- `ask(question, documentText)` then `waitForAsk(id)`: checked numerical Q&A over supplied text.
+- `listCitations`, `getCitation`, `balance`, `accuracy`, `verifyNumeric`, `verifyFeedback`, and v2 retained-source methods.
+
+## CLI
+
+- `npx webcite verify "<claim>"`, `npx webcite extract <file>`, `npx webcite search "<query>"`, `npx webcite balance`, `npx webcite login`. `--json` prints the full response.
+
+## Docs
+
+- [README](https://github.com/strategyconnect/webcite-js/blob/main/README.md)
+- [Webcite API documentation](https://webcite.co/api-docs)
+- [Webcite llms.txt](https://webcite.co/llms.txt)
+- [OpenAPI](https://api.webcite.co/api/v1/openapi.json)
+- [Errors and rate limits](https://webcite.co/api-docs/errors)

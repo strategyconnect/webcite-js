@@ -1,0 +1,77 @@
+{
+  "name": "webcite",
+  "version": "0.1.0",
+  "description": "Parse documents to Markdown and verify claims against sources, with citations bound to quotes. TypeScript SDK and CLI for the Webcite API.",
+  "keywords": [
+    "pdf-to-markdown",
+    "document-parsing",
+    "ocr",
+    "rag",
+    "claim-verification",
+    "fact-checking",
+    "citations",
+    "hallucination-detection",
+    "grounding",
+    "source-search",
+    "ai-agents",
+    "mcp",
+    "webcite"
+  ],
+  "homepage": "https://webcite.co/api-docs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/strategyconnect/webcite-js.git"
+  },
+  "bugs": "https://github.com/strategyconnect/webcite-js/issues",
+  "license": "MIT",
+  "author": "Webcite",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "webcite": "dist/esm/cli/bin.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "llms.txt"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true});require('node:fs').rmSync('.test-build',{recursive:true,force:true})\"",
+    "build": "npm run clean && tsc -p tsconfig.json && tsc -p tsconfig.cjs.json && node scripts/finish-build.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.test.json --noEmit",
+    "lint": "biome check src test scripts examples",
+    "test": "tsc -p tsconfig.test.json && node --test \".test-build/test/*.test.js\"",
+    "check": "npm run lint && npm run typecheck && npm run build && npm test",
+    "update-openapi": "curl -fsS https://api.webcite.co/api/v1/openapi.json -o test/fixtures/openapi.json",
+    "prepack": "npm run build"
+  },
+  "dependencies": {
+    "undici": "6.29.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.6.5",
+    "@types/node": "18.19.130",
+    "typescript": "5.9.3"
+  }
+}
