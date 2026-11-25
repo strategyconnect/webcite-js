@@ -47,7 +47,7 @@ const env = (name: string): string | undefined =>
 export function resolveConfig(options: ClientOptions): Config {
   const apiKey = (options.apiKey ?? env('WEBCITE_API_KEY') ?? '').trim();
   if (!apiKey) {
-    throw new AuthenticationError('No Webcite API key was provided.', {
+    throw new AuthenticationError('Set WEBCITE_API_KEY or pass { apiKey } to authenticate.', {
       code: 'missing_api_key',
       docUrl: 'https://webcite.co/api-docs/authentication',
       nextStep: MISSING_KEY_STEP,
@@ -55,7 +55,7 @@ export function resolveConfig(options: ClientOptions): Config {
   }
   const baseUrl = (options.baseUrl ?? env('WEBCITE_API_URL') ?? DEFAULT_BASE_URL).replace(/\/+$/, '');
   const fetchImpl = options.fetch ?? globalThis.fetch;
-  if (typeof fetchImpl !== 'function') throw new WebciteError('No fetch implementation is available.');
+  if (typeof fetchImpl !== 'function') throw new WebciteError('Pass { fetch } on runtimes without a global fetch.');
   return {
     apiKey,
     baseUrl,
@@ -196,7 +196,7 @@ function parseFrame(lines: readonly string[]): StreamEvent | undefined {
 }
 
 async function* frames(response: Response): AsyncGenerator<StreamEvent> {
-  if (!response.body) throw new IncompleteStreamError('The stream had no body.', []);
+  if (!response.body) throw new IncompleteStreamError('The stream closed before its first event.', []);
   const decoder = new TextDecoder();
   let buffer = '';
   let pending: string[] = [];

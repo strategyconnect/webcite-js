@@ -63,7 +63,7 @@ export class IncompleteStreamError extends WebciteError {
   }
 }
 
-export const MISSING_KEY_STEP = `Pass { apiKey } or set WEBCITE_API_KEY. Create a key at ${KEYS_PAGE} (sign-in required).`;
+export const MISSING_KEY_STEP = `Create a key at ${KEYS_PAGE} (sign-in required).`;
 
 type ErrorClass = new (message: string, options: WebciteErrorOptions) => APIError;
 

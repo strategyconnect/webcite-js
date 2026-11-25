@@ -53,14 +53,14 @@ async function client(values: Values): Promise<Webcite> {
   const apiKey = process.env.WEBCITE_API_KEY || (await readStoredKey());
   if (!apiKey) {
     throw new UsageError(
-      `No API key found. Run \`webcite login\`, or set WEBCITE_API_KEY. Create a key at ${KEYS_PAGE} (sign-in required).`,
+      `Run \`webcite login\`, or set WEBCITE_API_KEY. Create a key at ${KEYS_PAGE} (sign-in required).`,
     );
   }
   return new Webcite({ apiKey, baseUrl: values['api-url'] });
 }
 
 function needArg(arg: string | undefined, what: string): string {
-  if (!arg) throw new UsageError(`Missing ${what}. Run \`webcite --help\`.`);
+  if (!arg) throw new UsageError(`Pass a ${what}. Run \`webcite --help\` for usage.`);
   return arg;
 }
 
@@ -79,9 +79,7 @@ async function extract(values: Values, file: string): Promise<void> {
 async function login(values: Values): Promise<void> {
   const given = await readKey({ openBrowser: !values['no-browser'] });
   if (!given)
-    throw new UsageError(
-      `No key was given. Copy a key from ${KEYS_PAGE} and paste it, or pipe it: \`webcite login < key.txt\`.`,
-    );
+    throw new UsageError(`Copy a key from ${KEYS_PAGE} and paste it, or pipe it: \`webcite login < key.txt\`.`);
   const wc = new Webcite({ apiKey: given.apiKey, baseUrl: values['api-url'] });
   await wc.balance();
   const path = await storeKey(given.apiKey, credentialsPath());
