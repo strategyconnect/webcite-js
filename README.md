@@ -188,6 +188,19 @@ pass `timeout` (milliseconds) and `maxRetries` to change them, or `fetch` to sup
 The SDK sends no telemetry. Each request carries `x-webcite-surface: sdk-js` and a
 `webcite-js/<version>` user agent, which Webcite stores as labels only.
 
+## Use with agent frameworks
+
+Short runnable examples are in [`examples/frameworks/`](examples/frameworks):
+
+| Framework | File | How it connects |
+|---|---|---|
+| Vercel AI SDK | `vercel-ai-sdk-tools.ts` | [`webcite-ai-sdk`](https://github.com/strategyconnect/webcite-ai-sdk) tools |
+| Vercel AI SDK | `vercel-ai-sdk-mcp.ts` | Hosted MCP server through `@ai-sdk/mcp` |
+
+The MCP example lists the Webcite tools without calling a model when run with no arguments.
+Python examples (LangChain, Haystack, CrewAI, Google ADK, OpenAI Agents SDK, Pydantic AI) are in
+the [Python SDK](https://github.com/strategyconnect/webcite-python/tree/main/examples/frameworks).
+
 ## Links
 
 - API documentation: https://webcite.co/api-docs (each page has a Markdown copy)
